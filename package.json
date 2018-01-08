@@ -1,0 +1,26 @@
+{
+  "name": "skill",
+  "version": "1.0.0",
+  "description": "alexa skill",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "lint": "eslint src/"
+  },
+  "author": "GarthCon",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-sdk": "^1.0.24",
+    "config": "^1.29.0",
+    "lodash": "^4.17.4",
+    "mocha": "^3.2.0",
+    "mtgsdk": "^0.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-spellcheck": "^0.0.8",
+    "mocha": "^3.2.0"
+  }
+}
