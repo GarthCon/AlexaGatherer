@@ -2,10 +2,23 @@
 
 const _ = require('lodash');
 const Alexa = require('alexa-sdk');
-const cmcHandler = require(__dirname + '/cmc/convertedManaCostIntent');
+const cardHandler = require(__dirname + '/cards/cardSearchIntent');
+const config = require('config');
+
+const indexHandlers = {
+    LaunchRequest() {
+        this.emit(':ask', 'You want to know about a card?', 'What is it you would like to know?');
+    },
+  
+    Unhandled() {
+      console.info('Unhandled event called');
+  
+      this.emit(':tell', 'I cannot help you with that.');
+    }
+};
 
 const handlers = _.assign(
-    {}, cmcHandler);
+    {}, indexHandlers, cardHandler);
 
 exports.handler = function (event, context, callback) {
 
