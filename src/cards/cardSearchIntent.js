@@ -10,15 +10,18 @@ function getCard(cardSlot) {
 
   return mtg.card.where({ name: cardSlot.value })
     .then((cards) => {
-      console.info('Found ' + cards.length + 'cards');
-      if (cards.length > 10) {
-        return (cards[0]);
+      console.info('Found ' + cards.length + ' cards');
+      if (cards.length > 50) {
+        return;
+      } else if (cards.length > 10) {
+          return (cards[0]);
       } else {
         for (var i = 0; i < cards.length; i++) {
           if (cardSlot.value.toLowerCase() === cards[i].name.toLowerCase()) {
             return cards[i];
           }
         }
+        return cards[0];
       }
     });
 }
@@ -33,7 +36,7 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
-
+      if(!card.colors) card.colors = 'colorless';
       console.info('card: ' + card.cmc);
       self.emit(':ask', 'The converted mana cost of ' + card.name + ' is ' + card.cmc, reprompt);
     });
@@ -47,9 +50,13 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
-
+      if(!card.colors) card.colors = 'colorless';
       console.info('card: ' + card.cmc);
-      self.emit(':ask', 'The power of ' + card.name + ' is ' + card.power, reprompt);
+      if(card.type.toLowerCase() === 'creature') {
+        self.emit(':ask', 'The power of ' + card.name + ' is ' + card.power, reprompt);
+    } else {
+      self.emit(':ask', 'card.name is not a creature')
+    }
     });
   },
   ToughnessIntent() {
@@ -61,9 +68,13 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
-
-      console.info('card: ' + card.cmc);
+      if(!card.colors) card.colors = 'colorless';
+      console.info('card: ' + card.toughness);
+      if(card.type.toLowerCase() === 'creature') {
       self.emit(':ask', 'The toughness of ' + card.name + ' is ' + card.toughness, reprompt);
+      } else {
+        self.emit(':ask', 'card.name is not a creature')
+      }
     });
   },
   TypeIntent() {
@@ -75,7 +86,7 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
-
+      if(!card.colors) card.colors = 'colorless';
       console.info('card: ' + card.cmc);
       self.emit(':ask', 'The type of ' + card.name + ' is ' + card.type, reprompt);
     });
@@ -89,7 +100,7 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
-
+      if(!card.colors) card.colors = 'colorless';
       console.info('card: ' + card.cmc);
       self.emit(':ask', 'The rarity of ' + card.name + ' is ' + card.rarity, reprompt);
     });
@@ -103,12 +114,13 @@ module.exports = {
         self.emit(':ask', fail, reprompt);
         return;
       }
+      if(!card.colors) card.colors = 'colorless';
       console.info('card: ' + card.cmc);
       if(card.type.toLowerCase() === 'creature') {
-      self.emit(':ask', card.name + ' is a ' + card.cmc + ' cost ' + card.color + ' ' + card.type + 
+      self.emit(':ask', card.name + ' is a ' + card.cmc + ' cost ' + card.colors + ' ' + card.type + 
       '. It has ' + card.toughness + ' toughness and ' + card.power + ' power and says ' + card.text, reprompt);
       } else {
-        self.emit(':ask', card.name + ' is a ' + card.cmc + ' cost ' + card.color + ' ' + card.type + 
+        self.emit(':ask', card.name + ' is a ' + card.cmc + ' cost ' + card.colors + ' ' + card.type + 
         '. It says ' + card.text, reprompt);
       }
     });
